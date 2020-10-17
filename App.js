@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Map from './src/components/Map.js';
+import Login from './src/components/Login.js';
 
 const TopTab = createMaterialTopTabNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -51,21 +52,12 @@ export default class App extends Component {
     return (
       <NavigationContainer>
         <BottomTab.Navigator
-          tabBarOptions={{
-            activeTintColor: 'tomato',
-            inactiveTintColor: 'gray',
-            style: {
-              height: 75,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              fontSize: 20
-            }
-          }}
           screenOptions={{
-            headerShown: false
+            headerShown: true
           }}
         >
           <BottomTab.Screen name="Home" component={HomeScreen} />
+          <BottomTab.Screen name="Login" component={Login} />
         </BottomTab.Navigator>
       </NavigationContainer>
     );
