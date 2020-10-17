@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export default Card = styled.View(({width = '80%', height='30%'}) => `
   width: ${width};
-  height: ${height}%;
+  height: ${height};
   display: flex;
   align-items: center;
   justify-content: space-evenly;
