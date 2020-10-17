@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View, Text, SafeAreaView } from 'react-native';
 import API from '../utils/API';
 import Card from './Card';
 
@@ -39,9 +39,9 @@ class Report extends Component {
       <>
         {
           !loading ? (
-            <View>
+            <SafeAreaView>
               {components}
-            </View>
+            </SafeAreaView>
           ) : (
             <View style={styles.indicatorStyle}>
               <ActivityIndicator size="large" />

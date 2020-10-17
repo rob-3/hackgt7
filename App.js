@@ -14,6 +14,7 @@ import Profile from './src/components/Profile.js';
 import SignUp from './src/components/SignUp';
 import { HomeIcon } from './src/icons/HomeIcon';
 import { ProfileIcon } from './src/icons/ProfileIcon';
+import { SpeakerIcon } from './src/icons/SpeakerIcon';
 import NCRLogo from './src/icons/NCRLogo.png';
 import { set } from 'react-native-reanimated';
 
@@ -39,7 +40,6 @@ class HomeScreen extends Component {
         }}>
         <TopTab.Screen name="Map" component={Map} />
         <TopTab.Screen name="Accounts" component={Accounts} />
-        <TopTab.Screen name="Report" component={Report} />
       </TopTab.Navigator>
     );
   }
@@ -95,9 +95,13 @@ export default App = () => {
               <BottomTab.Screen name="Profile" children={(props) => <Profile {...props} setUser={setUser}/>} options={{
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ color, size }) => (
-                  // <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <ProfileIcon color={color} />
-                  // </View>
+                ),
+              }}/>
+              <BottomTab.Screen name="Report" component={Report} options={{
+                tabBarLabel: 'Report',
+                tabBarIcon: ({ color, size }) => (
+                  <SpeakerIcon color={color} />
                 ),
               }}/>
             </BottomTab.Navigator>
