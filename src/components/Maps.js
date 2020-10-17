@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
-class Map extends Component {
+const places = new Map();
+places.set(28.60576, 'UCF');
+
+class Maps extends Component {
   constructor(props) {
     super(props);
     this.state = {
       initialRegion: null,
-      found: false
+      found: false,
+      popupPlace: null
     };
     this.goToInitialRegion = this.goToInitialRegion.bind(this);
+    this.openPopup = this.openPopup.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +52,13 @@ class Map extends Component {
     this.mapView.animateToRegion(initialRegion, 2000);
   }
 
+  openPopup(e) {
+    console.log(e.nativeEvent);
+    const coordinate = e.nativeEvent.coordinate;
+    const place = places.get(coordinate.latitude);
+    this.setState({popupPlace: place});
+  }
+
   render() {
     return (
       <>
@@ -60,7 +72,18 @@ class Map extends Component {
             showsUserLocation={true}
             onMapReady={this.goToInitialRegion}
             initialRegion={this.state.initialRegion}
-          />
+          >
+            <Marker
+              key={0}
+              coordinate={{ latitude: 28.60576, longitude: -81.196575}}
+              title={'Title'}
+              description={'Description that can be longer'}
+              onPress={this.openPopup}
+            >
+              <View style={{backgroundColor: 'red', padding: 10}}>
+              </View>
+            </Marker>
+          </MapView>
         ) : (
           <View style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" />
@@ -85,4 +108,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Map;
+export default Maps;
