@@ -9,10 +9,11 @@ const getAllTransactions = async (userNumber) => {
   const accounts = await getAccounts(userNumber, accessToken);
 
   const ids = accounts.map(account => {
+    // we don't have to hardcode this, there are 299 users
     return { account: account.id, user: 'HACKATHONUSER100' };
   });
 
-  const transactions = await Promise.all(ids.map(async cur => {
+  const transactions = await Promise.allSettled(ids.map(async cur => {
     const config = {
       method: 'get',
       url: `http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?accountId=${cur.account}&hostUserId=${cur.user}`,
@@ -30,9 +31,16 @@ const getAllTransactions = async (userNumber) => {
     }
   }));
 
+  const goodTransactions = transactions
+    .filter(t => t.status === 'fulfilled')
+    .filter(t => t.value !== undefined)
+    .map(t => t.value)
+    .flat();
+  console.log(goodTransactions);
+
   return {
     status: 200,
-    data: transactions
+    data: goodTransactions
   };
 };
 
