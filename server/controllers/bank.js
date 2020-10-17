@@ -23,13 +23,14 @@ const retryAxios = (...params) => {
 const getAllTransactions = async (userNumber) => {
   const accessToken = await getAuthCode().catch(err => console.log(err.message));
   const accounts = await getAccounts(userNumber, accessToken).catch(err => console.log(err.message));
-
   const ids = accounts.map(account => {
     // we don't have to hardcode this, there are 299 users
     return { account: account.id, user: 'HACKATHONUSER100' };
   });
 
-  const transactions = await Promise.allSettled(ids.map(async cur => {
+  const idtmp = [ids[0]];
+
+  const transactions = await Promise.allSettled(idtmp.map(async cur => {
     const config = {
       method: 'get',
       url: `http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?accountId=${cur.account}&hostUserId=${cur.user}`,
@@ -51,8 +52,9 @@ const getAllTransactions = async (userNumber) => {
 
   const simpleTransactions = goodTransactions.map(t => ({
     amount: t.amount.amount,
-    date: new Date(t.transactionDate),
+    date: t.transactionDate,
     place: getRandomPlace(),
+    id: t.id
   }));
   console.log(simpleTransactions);
 

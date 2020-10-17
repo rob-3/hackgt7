@@ -25,12 +25,18 @@ class Report extends Component {
   render() {
     const { loading } = this.state;
 
+    let components;
+    if (!loading) {
+      const sorted = [...this.state.transactions.data].sort((a, b) => new Date(b.date) - new Date(a.date));
+      components = sorted.map(t => <Text key={t.id}>{`$${t.amount} ${t.date} ${t.place}`}</Text>);
+    }
+
     return (
       <>
         {
           !loading ? (
             <View>
-              <Text>Report</Text>
+              {components}
             </View>
           ) : (
             <View style={styles.indicatorStyle}>
