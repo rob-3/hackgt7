@@ -20,6 +20,7 @@ const Login = ({setUser, navigation}) => {
   const handleFieldChange = (field, val) => {
     setCredentials(prev => ({...prev, [field]: val}));
   };
+
   const handleSubmit = async () => {
     try {
       let res = await API.login(credentials);
