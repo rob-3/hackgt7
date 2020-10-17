@@ -31,8 +31,11 @@ class HomeScreen extends Component {
         //   },
         // })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
+          activeTintColor: '#469F3D',
+          inactiveTintColor: '#000000',
+          indicatorStyle: {
+            backgroundColor: '#469D3D'
+          },
           style: {
             height: 75,
             display: 'flex',
