@@ -3,20 +3,11 @@ import { View, Text, Keyboard, TouchableWithoutFeedback, Button, TouchableHighli
 import styled from 'styled-components/native';
 import API from '../utils/API';
 import AsyncStorage from '@react-native-community/async-storage';
+import Card from './Card';
 
 const Input = styled.TextInput`
   height: 30px;
   width: 80%;
-`;
-
-const Card = styled.View`
-  background-color: white;
-  width: 80%;
-  height: 30%;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
 `;
 
 const initialCredentials = {

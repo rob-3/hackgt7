@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View, Text, Image } from 'react-native';
+import Card from './Card';
 // import API from '../utils/API';
 
 class Accounts extends Component {
@@ -24,8 +25,11 @@ class Accounts extends Component {
       <>
         {
           !loading ? (
-            <View>
-              <Text>Accounts</Text>
+            <View style={{ flex: 1, alignItems: "center", padding: "5%"}}>
+              <Card height="10%">
+                <Image source={require('../../assets/circle-plus.png')}/>
+                <Text>Add Bank Card</Text>
+              </Card>
             </View>
           ) : (
             <View style={styles.indicatorStyle}>
