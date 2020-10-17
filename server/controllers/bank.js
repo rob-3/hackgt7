@@ -58,7 +58,7 @@ const getAllTransactions = async (userNumber) => {
 
   return {
     status: 200,
-    data: goodTransactions
+    data: simpleTransactions
   };
 };
 
