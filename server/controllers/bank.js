@@ -3,10 +3,28 @@ const qs = require('qs');
 const { v4: uuidv4 } = require('uuid');
 let transactionId;
 
+const getRandomPlace = () => 'Shady gas station';
+
+const retryAxios = (...params) => {
+  return axios(...params).catch(err => {
+    console.log(err.message);
+    console.log('Retrying...');
+    return axios(...params).catch(err => {
+      console.log(err.message);
+      console.log('Fetch failed twice.');
+      console.log('Retrying again...');
+      return axios(...params).catch(err => {
+        console.log(err.message);
+        console.log('Fetch failed three times, giving up.');
+      });
+    });
+  });
+};
+
 const getAllTransactions = async (userNumber) => {
   transactionId = uuidv4();
-  const accessToken = await getAuthCode();
-  const accounts = await getAccounts(userNumber, accessToken);
+  const accessToken = await getAuthCode().catch(err => console.log(err.message));
+  const accounts = await getAccounts(userNumber, accessToken).catch(err => console.log(err.message));
 
   const ids = accounts.map(account => {
     // we don't have to hardcode this, there are 299 users
@@ -23,20 +41,22 @@ const getAllTransactions = async (userNumber) => {
         'Accept': 'application/json'
       }
     };
-    try {
-      const { data } = await axios(config);
-      return data.transactions; 
-    } catch (err) {
-      console.log(err.message);
-    }
-  }));
+    const { data } = await retryAxios(config);
+    return data.transactions; 
+  })).catch(err => console.log(err));
 
   const goodTransactions = transactions
     .filter(t => t.status === 'fulfilled')
     .filter(t => t.value !== undefined)
     .map(t => t.value)
     .flat();
-  console.log(goodTransactions);
+
+  const simpleTransactions = goodTransactions.map(t => ({
+    amount: t.amount.amount,
+    date: new Date(t.transactionDate),
+    place: getRandomPlace(),
+  }));
+  console.log(simpleTransactions);
 
   return {
     status: 200,
@@ -62,7 +82,7 @@ const getAuthCode = async () => {
     data : data
   };
 
-  return axios(config)
+  return retryAxios(config)
     .then(response => {
       console.log(JSON.stringify(response.data.access_token));
       return response.data.access_token;
@@ -88,9 +108,8 @@ const getAccounts = async (userNumber, accessToken) => {
     },
     data: data
   };
-  const { data: d } = await axios(config);
+  const { data: d } = await retryAxios(config);
   return d.accounts;
-  
 };
 
 module.exports = { getAllTransactions };
