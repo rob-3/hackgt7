@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, View } from 'react-native';
+import { Button, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const Profile = ({user, setUser}) => {
