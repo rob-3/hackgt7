@@ -1,43 +1,38 @@
 const axios = require('axios');
 const qs = require('qs');
 const { v4: uuidv4 } = require('uuid');
+let transactionId;
 
 const getAllTransactions = async (userNumber) => {
+  transactionId = uuidv4();
   const accessToken = await getAuthCode();
   const accounts = await getAccounts(userNumber, accessToken);
-  const ids = accounts.map(account => account.id);
 
+  const ids = accounts.map(account => {
+    return { account: account.id, user: 'HACKATHONUSER100' };
+  });
 
-  const transactions = ids.map(async id => {
-    const params = {
-      accountId: 'HACKATHONUSER' + userNumber,
-      hostUserId: id
-    };
+  const transactions = await Promise.all(ids.map(async cur => {
     const config = {
       method: 'get',
-      url: 'http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?' + qs.stringify(params),
+      url: `http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?accountId=${cur.account}&hostUserId=${cur.user}`,
       headers: { 
         'Authorization': 'Bearer ' + accessToken, 
-        'transactionId': uuidv4(), 
+        'transactionId': transactionId, 
         'Accept': 'application/json'
       }
     };
-    const { data } = await axios(config).catch(err => console.err(err));
-    return data.transactions;
-  });
-
-  const flattenedTransactions = await Promise.all(transactions).then(arr => arr.flat());
-  const finalTransactions = flattenedTransactions.map(t => {
-    return {
-      id: t.id,
-      memo: 'Chick-fil-a',
-      amount: t.amount.amount,
-    };
-  });
+    try {
+      const { data } = await axios(config);
+      return data.transactions; 
+    } catch (err) {
+      console.log(err.message);
+    }
+  }));
 
   return {
     status: 200,
-    data: finalTransactions
+    data: transactions
   };
 };
 
@@ -52,7 +47,7 @@ const getAuthCode = async () => {
     headers: { 
       'Content-Type': 'application/x-www-form-urlencoded', 
       'Authorization': 'Basic alI3RWg3dUF5cFQ0dEpMb0xVMmRBTVlHQ1l5ejZsVjg6T3FRZXQ0OE5YWDdTQXB4SA==', 
-      'transactionId': uuidv4(), 
+      'transactionId': transactionId, 
       'institutionId': '00516', 
       'Accept': 'application/json'
     },
@@ -76,10 +71,11 @@ const getAccounts = async (userNumber, accessToken) => {
   });
   const params = { hostUserId: 'HACKATHONUSER' + userNumber };
   const config = {
+    method: 'get',
     url: 'http://ncrdev-dev.apigee.net/digitalbanking/db-accounts/v1/accounts?' + qs.stringify(params),
     headers: {
       Authorization: 'Bearer ' + accessToken,
-      transactionId: uuidv4(),
+      transactionId: transactionId,
       Accept: 'application/json'
     },
     data: data

@@ -20,25 +20,25 @@ const Card = styled.View`
 `;
 
 const initialCredentials = {
-  username: "",
-  password: ""
+  username: '',
+  password: ''
 };
 
 const Login = ({setUser, navigation}) => {
   const [credentials, setCredentials] = useState(initialCredentials);
   const handleFieldChange = (field, val) => {
     setCredentials(prev => ({...prev, [field]: val}));
-  }
+  };
   const handleSubmit = async () => {
     try {
       let res = await API.login(credentials);
-      setUser(res.data)
+      setUser(res.data);
       await AsyncStorage.setItem('User', JSON.stringify(res.data));
     } catch(e) {
       console.log(e.message);
     }
   };
-
+  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -47,13 +47,13 @@ const Login = ({setUser, navigation}) => {
           <Input placeholder="Username" value={credentials.username} onChangeText={(text) => handleFieldChange('username', text)}></Input>
           <Input placeholder="Password" secureTextEntry value={credentials.password} onChangeText={(text) => handleFieldChange('password', text)}></Input>
           <TouchableHighlight onPress={()=> navigation.navigate('SignUp')}>
-          <Text>Don't have an account? Sign Up!</Text>
+            <Text>Don't have an account? Sign Up!</Text>
           </TouchableHighlight>
           <Button title="Login" onPress={handleSubmit}></Button>
         </Card>
       </View>
     </TouchableWithoutFeedback>
-  )
-}
+  );
+};
 
 export default Login;

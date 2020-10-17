@@ -6,6 +6,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createStackNavigator } from '@react-navigation/stack';
 import Map from './src/components/Map.js';
 import Login from './src/components/Login.js';
+import Accounts from './src/components/Accounts.js';
+import Report from './src/components/Report.js';
 import User from './src/utils/User.js';
 import Profile from './src/components/Profile.js';
 import SignUp from './src/components/SignUp';
@@ -49,8 +51,8 @@ class HomeScreen extends Component {
           }
         }}>
         <TopTab.Screen name="Map" component={Map} />
-        <TopTab.Screen name="Accounts" component={Map} />
-        <TopTab.Screen name="Alerts" component={Map} />
+        <TopTab.Screen name="Accounts" component={Accounts} />
+        <BottomTab.Screen name="Report" component={Report} />
       </TopTab.Navigator>
     );
   }
@@ -69,7 +71,7 @@ export default App = () => {
     } catch (e) {
       console.log(e.message);
     }
-  }
+  };
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
@@ -84,14 +86,14 @@ export default App = () => {
           )}>
           </Stack.Screen>
         ) : (
-            <>
-              <Stack.Screen name="LogIn" children={(props) => <Login {...props} setUser={setUser} />}>
-              </Stack.Screen>
-              <Stack.Screen name="SignUp" children={(props) => <SignUp {...props} setUser={setUser} />}>
-              </Stack.Screen>
-            </>
-          )}
+          <>
+            <Stack.Screen name="LogIn" children={(props) => <Login {...props} setUser={setUser} />}>
+            </Stack.Screen>
+            <Stack.Screen name="SignUp" children={(props) => <SignUp {...props} setUser={setUser} />}>
+            </Stack.Screen>
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
