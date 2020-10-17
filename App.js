@@ -52,7 +52,6 @@ class HomeScreen extends Component {
         }}>
         <TopTab.Screen name="Map" component={Map} />
         <TopTab.Screen name="Accounts" component={Accounts} />
-        <BottomTab.Screen name="Report" component={Report} />
       </TopTab.Navigator>
     );
   }
@@ -82,6 +81,7 @@ export default App = () => {
             <BottomTab.Navigator {...props}>
               <BottomTab.Screen name="Home" children={(props) => <HomeScreen {...props} />} />
               <BottomTab.Screen name="Profile" children={(props) => <Profile {...props} setUser={setUser}/>} />
+              <BottomTab.Screen name="Report" component={Report} />
             </BottomTab.Navigator>
           )}>
           </Stack.Screen>
