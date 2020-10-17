@@ -17,7 +17,7 @@ const getAllTransactions = async (userNumber) => {
       method: 'get',
       url: 'http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?' + qs.stringify(params),
       headers: { 
-        'Authorization': 'Bearer ' + access_token, 
+        'Authorization': 'Bearer ' + accessToken, 
         'transactionId': uuidv4(), 
         'Accept': 'application/json'
       }
@@ -38,7 +38,7 @@ const getAllTransactions = async (userNumber) => {
   return {
     status: 200,
     data: finalTransactions
-  }
+  };
 };
 
 const getAuthCode = async () => {
