@@ -19,15 +19,15 @@ const Card = styled.View`
 `;
 
 const initialCredentials = {
-  username: "",
-  password: ""
+  username: '',
+  password: ''
 };
 
 const Login = () => {
   const [credentials, setCredentials] = useState(initialCredentials);
   const handleFieldChange = (field, val) => {
     setCredentials(prev => ({...prev, [field]: val}));
-  }
+  };
   const handleSubmit = async () => {
     try {
       let res = await API.login(credentials);
@@ -35,7 +35,7 @@ const Login = () => {
     } catch(e) {
       console.log(e.message);
     }
-  }
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -47,7 +47,7 @@ const Login = () => {
         </Card>
       </View>
     </TouchableWithoutFeedback>
-  )
-}
+  );
+};
 
 export default Login;

@@ -5,6 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Map from './src/components/Map.js';
 import Login from './src/components/Login.js';
+import Accounts from './src/components/Accounts.js';
+import Report from './src/components/Report.js';
 
 const TopTab = createMaterialTopTabNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -40,8 +42,8 @@ class HomeScreen extends Component {
           }
         }}>
         <TopTab.Screen name="Map" component={Map} />
-        <TopTab.Screen name="Accounts" component={Map} />
-        <TopTab.Screen name="Alerts" component={Map} />
+        <TopTab.Screen name="Accounts" component={Accounts} />
+        <BottomTab.Screen name="Report" component={Report} />
       </TopTab.Navigator>
     );
   }

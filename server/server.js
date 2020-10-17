@@ -3,7 +3,7 @@ require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const auth = require('./middleware/auth');
-const db = require('./db');
+// const db = require('./db');
 const app = express();
 
 app.use(cors());
@@ -19,5 +19,5 @@ app.post('/', auth.checkToken, (req, res) => res.json({
 }));
 
 app.listen(8080, () => {
-  console.log('Server running')
+  console.log('Server running');
 });

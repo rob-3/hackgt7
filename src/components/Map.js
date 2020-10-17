@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import MapView from 'react-native-maps';
 
 class Map extends Component {
@@ -61,17 +61,28 @@ class Map extends Component {
             onMapReady={this.goToInitialRegion}
             initialRegion={this.state.initialRegion}
           />
-        ) : <ActivityIndicator size="large" />}
+        ) : (
+          <View style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
       </>
     );
   }
-}
+}////
 
 const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
+  indicatorStyle: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default Map;

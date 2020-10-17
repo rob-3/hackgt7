@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, ActivityIndicator, View, Text } from 'react-native';
-// import API from '../utils/API';
+import API from '../utils/API';
 
-class Accounts extends Component {
+class Report extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,9 +12,14 @@ class Accounts extends Component {
   }
 
   async componentDidMount() {
-    // const transactions = await API.getTransactions();
-    // console.log(transactions);
-    this.setState({ loading: false });
+    try {
+      const transactions = await API.getTransactions(105);
+      console.log(transactions);
+      this.setState({ transactions, loading: false });
+    } catch (err) {
+      console.log(err);
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -25,7 +30,7 @@ class Accounts extends Component {
         {
           !loading ? (
             <View>
-              <Text>Accounts</Text>
+              <Text>Report</Text>
             </View>
           ) : (
             <View style={styles.indicatorStyle}>
@@ -52,4 +57,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Accounts;
+export default Report;
