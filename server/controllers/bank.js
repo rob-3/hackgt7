@@ -1,7 +1,6 @@
 const axios = require('axios');
 const qs = require('qs');
 const { v4: uuidv4 } = require('uuid');
-let transactionId;
 
 const getRandomPlace = () => 'Shady gas station';
 
@@ -22,7 +21,6 @@ const retryAxios = (...params) => {
 };
 
 const getAllTransactions = async (userNumber) => {
-  transactionId = uuidv4();
   const accessToken = await getAuthCode().catch(err => console.log(err.message));
   const accounts = await getAccounts(userNumber, accessToken).catch(err => console.log(err.message));
 
@@ -37,7 +35,7 @@ const getAllTransactions = async (userNumber) => {
       url: `http://ncrdev-dev.apigee.net/digitalbanking/db-transactions/v1/transactions?accountId=${cur.account}&hostUserId=${cur.user}`,
       headers: { 
         'Authorization': 'Bearer ' + accessToken, 
-        'transactionId': transactionId, 
+        'transactionId': uuidv4(), 
         'Accept': 'application/json'
       }
     };
@@ -75,7 +73,7 @@ const getAuthCode = async () => {
     headers: { 
       'Content-Type': 'application/x-www-form-urlencoded', 
       'Authorization': 'Basic alI3RWg3dUF5cFQ0dEpMb0xVMmRBTVlHQ1l5ejZsVjg6T3FRZXQ0OE5YWDdTQXB4SA==', 
-      'transactionId': transactionId, 
+      'transactionId': uuidv4(), 
       'institutionId': '00516', 
       'Accept': 'application/json'
     },
@@ -103,7 +101,7 @@ const getAccounts = async (userNumber, accessToken) => {
     url: 'http://ncrdev-dev.apigee.net/digitalbanking/db-accounts/v1/accounts?' + qs.stringify(params),
     headers: {
       Authorization: 'Bearer ' + accessToken,
-      transactionId: transactionId,
+      transactionId: uuidv4(),
       Accept: 'application/json'
     },
     data: data
