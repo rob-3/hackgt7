@@ -19,7 +19,6 @@ class Map extends Component {
   getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log(position);
         let region = {
           latitude: parseFloat(position.coords.latitude),
           longitude: parseFloat(position.coords.longitude),
