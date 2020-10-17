@@ -25,7 +25,7 @@ class Accounts extends Component {
       <>
         {
           !loading ? (
-            <View style={{ flex: 1, alignItems: "center", padding: "5%"}}>
+            <View style={{ flex: 1, alignItems: 'center', padding: '5%'}}>
               <Card height="10%">
                 <Image source={require('../../assets/circle-plus.png')}/>
                 <Text>Add Bank Card</Text>

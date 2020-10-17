@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, ActivityIndicator, View, Text } from 'react-native';
 import API from '../utils/API';
+import Card from './Card';
 
 class Report extends Component {
   constructor(props) {
@@ -28,7 +29,10 @@ class Report extends Component {
     let components;
     if (!loading) {
       const sorted = [...this.state.transactions.data].sort((a, b) => new Date(b.date) - new Date(a.date));
-      components = sorted.map(t => <Text key={t.id}>{`$${t.amount} ${t.date} ${t.place}`}</Text>);
+      components = sorted.map(t => 
+        <Card key={t.id} height='10%' width='100%'>
+          <Text>{`$${t.amount} ${t.date} ${t.place}`}</Text>
+        </Card>);
     }
 
     return (
