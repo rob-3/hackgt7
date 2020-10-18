@@ -59,7 +59,7 @@ const SignUp = ({ setUser, navigation }) => {
   const handleSubmit = async () => {
     try {
       let res = await API.signup(credentials);
-      if(res.code === 200){
+      if(res.status === 200){
         setShowModal(true);
       }
 
