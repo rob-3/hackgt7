@@ -30,8 +30,10 @@ class Report extends Component {
     if (!loading) {
       const sorted = [...this.state.transactions.data].sort((a, b) => new Date(b.date) - new Date(a.date));
       components = sorted.map(t => 
-        <Card key={t.id} height='10%' width='100%'>
-          <Text>{`$${t.amount} ${t.date} ${t.place}`}</Text>
+        <Card key={t.id} height='10%' width='100%' onPress={() => {
+          API.createFraudulentTransaction(t.place);
+        }}>
+          <Text>{`$${t.amount} ${t.date} ${t.place.name}`}</Text>
         </Card>);
     }
 

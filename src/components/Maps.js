@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import API from '../utils/API';
 
 const places = new Map();
 places.set(28.60576, 'UCF');
@@ -10,14 +11,18 @@ class Maps extends Component {
     super(props);
     this.state = {
       initialRegion: null,
-      found: false,
-      popupPlace: null
+      foundLocation: false,
+      loadingTrans: true,
+      popupPlace: null,
+      fraudulentTransactions: null,
     };
     this.goToInitialRegion = this.goToInitialRegion.bind(this);
     this.openPopup = this.openPopup.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { data } = await API.getFraudulentTransactions();
+    this.setState({ ...this.state, fraudulentTransactions: data, loadingTrans: false });
     this.getCurrentLocation();
   }
 
@@ -32,7 +37,7 @@ class Maps extends Component {
         };
         this.setState({
           initialRegion: region,
-          found: true
+          foundLocation: true
         });
         this.goToInitialRegion();
       },
@@ -60,9 +65,14 @@ class Maps extends Component {
   }
 
   render() {
+    const { foundLocation, loadingTrans } = this.state;
+    console.log('found location');
+    console.log(foundLocation);
+    console.log('loading trans');
+    console.log(loadingTrans);
     return (
       <>
-        {this.state.found ? (
+        {(foundLocation && !loadingTrans) ? (
           <MapView
             style={styles.mapStyle}
             region={this.state.mapRegion}
@@ -73,16 +83,28 @@ class Maps extends Component {
             onMapReady={this.goToInitialRegion}
             initialRegion={this.state.initialRegion}
           >
-            <Marker
-              key={0}
-              coordinate={{ latitude: 28.60576, longitude: -81.196575}}
-              title={'Title'}
-              description={'Description that can be longer'}
-              onPress={this.openPopup}
-            >
-              <View style={{backgroundColor: 'red', padding: 10}}>
-              </View>
-            </Marker>
+            {
+              this.state.fraudulentTransactions.map((trans, index) => {
+                const { longitude, latitude } = trans;
+                console.log('IM IN HERE AT INDEX ' + index);
+                const fixedLat = latitude.toFixed(6);
+                const fixedLong = longitude.toFixed(6);
+                console.log(fixedLat);
+                console.log(fixedLong);
+                return (
+                  <Marker
+                    key={index}
+                    coordinate={{ latitude: fixedLong, longitude: fixedLat}}
+                    title={'Title'}
+                    description={'Description that can be longer'}
+                    onPress={this.openPopup}
+                  >
+                    <View style={{backgroundColor: 'red', padding: 10, border: 'black 1px solid', borderRadius: '10%'}}>
+                    </View>
+                  </Marker>
+                );
+              })
+            }
           </MapView>
         ) : (
           <View style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -92,7 +114,7 @@ class Maps extends Component {
       </>
     );
   }
-}////
+}
 
 const styles = StyleSheet.create({
   mapStyle: {

@@ -2,7 +2,14 @@ const axios = require('axios');
 const qs = require('qs');
 const { v4: uuidv4 } = require('uuid');
 
-const getRandomPlace = () => 'Shady gas station';
+const getRandomPlaces = () => {
+  return [
+    { name: 'Wendys', latitude: '26.094760', longitude: '-80.368990', id: 1 },
+    { name: 'McDonalds', latitude: '26.118290', longitude: '-80.393810', id: 2 },
+    { name: 'Walmart', latitude: '26.148029', longitude: '-80.318520', id: 3 },
+    { name: 'Burger King', latitude: '26.124110', longitude: '-80.361350', id: 4 }
+  ];
+};
 
 const retryAxios = (...params) => {
   return axios(...params).catch(err => {
@@ -49,13 +56,19 @@ const getAllTransactions = async (userNumber) => {
     .filter(t => t.value !== undefined)
     .map(t => t.value)
     .flat();
-
-  const simpleTransactions = goodTransactions.map(t => ({
-    amount: t.amount.amount,
-    date: t.transactionDate,
-    place: getRandomPlace(),
-    id: t.id
-  }));
+  
+  const randomPlaces = getRandomPlaces();
+  
+  const simpleTransactions = goodTransactions.map(t => {
+    const index = Math.floor(Math.random() * randomPlaces.length);
+    const location = randomPlaces[index];
+    return {
+      amount: t.amount.amount,
+      date: t.transactionDate,
+      place: location,
+      id: t.id
+    };
+  });
   console.log(simpleTransactions);
 
   return {
