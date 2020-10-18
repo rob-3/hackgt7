@@ -50,10 +50,10 @@ const Landing = ({ navigation, transactions }) => {
   const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
   const components = sorted.map((t, index) => {
     return (
-      <TouchableOpacity style={{ height : '25%', margin: 0 }} key={index} onPress={() => {
+      <TouchableOpacity style={{ height : 'auto', margin: 0 }} key={index} onPress={() => {
         navigation.navigate('Confirmation', { transaction: t });
       }}>
-        <Card key={t.id} height='100%' width='100%' align="center" direction="row" justify="center">
+        <Card key={t.id} margin={10} height='auto' width='100%' align="center" direction="row" justify="center">
           <View style={{width: '70%'}}>
             <Text>{new Date(t.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
             <Text>{t.place.name}</Text>
