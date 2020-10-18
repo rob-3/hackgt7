@@ -98,15 +98,15 @@ const Confirmation = ({ route, navigation }) => {
   return (
     <FlexSafeAreaView>
       <View style={{ padding: 20, paddingTop: 50 }}>
-        <Text style={{ fontSize: '20', fontWeight: 'bold' }}>{t.place.name}</Text>
-        <Text style={{ fontSize: '18' }}>1984 Andromeda Lane, Weston, Florida, 33327</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{t.place.name}</Text>
+        <Text style={{ fontSize: 18 }}>1984 Andromeda Lane, Weston, Florida, 33327</Text>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
-          <Text style={{ fontSize: '18', fontWeight: 'bold' }}>Amount:</Text>
-          <Text style={{ fontSize: '18', color: '#FF3B30' }}>{`$${t.amount}`}</Text>  
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Amount:</Text>
+          <Text style={{ fontSize: 18, color: '#FF3B30' }}>{`$${t.amount}`}</Text>  
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
-          <Text style={{ fontSize: '18', fontWeight: 'bold' }}>Transaction Date:</Text>
-          <Text style={{ fontSize: '18', color: '#C4C4C4' }}>{`$${t.date}`}</Text>  
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Transaction Date:</Text>
+          <Text style={{ fontSize: 18, color: '#C4C4C4' }}>{`$${t.date}`}</Text>  
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginVertical: 10 }}>
           <TouchableHighlight onPress={handler} style={styles.reportButton}>
