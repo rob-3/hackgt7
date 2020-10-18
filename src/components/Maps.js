@@ -12,17 +12,13 @@ class Maps extends Component {
     this.state = {
       initialRegion: null,
       foundLocation: false,
-      loadingTrans: true,
       popupPlace: null,
-      fraudulentTransactions: null,
       selectedMarker: null
     };
     this.goToInitialRegion = this.goToInitialRegion.bind(this);
   }
 
   async componentDidMount() {
-    const { data } = await API.getFraudulentTransactions();
-    this.setState({ ...this.state, fraudulentTransactions: data, loadingTrans: false });
     this.getCurrentLocation();
   }
 
@@ -58,7 +54,8 @@ class Maps extends Component {
   }
 
   render() {
-    const { foundLocation, loadingTrans, selectedMarker } = this.state;
+    const { foundLocation, selectedMarker } = this.state;
+    const { loadingTrans, fraudulentTransactions } = this.props;
     console.log('found location');
     console.log(foundLocation);
     console.log('loading trans');
@@ -78,21 +75,22 @@ class Maps extends Component {
               initialRegion={this.state.initialRegion}
             >
               {
-                this.state.fraudulentTransactions.map((trans, index) => {
-                  const { longitude, latitude, count } = trans;
-                  const fixedLat = latitude.toFixed(6);
-                  const fixedLong = longitude.toFixed(6);
-                  return (
-                    <Marker
-                      key={index}
-                      coordinate={{ latitude: parseFloat(fixedLat), longitude: parseFloat(fixedLong)}}
-                      onPress={() => this.setState({ selectedMarker: trans })}
-                    >
-                      <View style={{backgroundColor: `${count > 10 ? '#FF3B30' : '#FFF67D'}`, height: 20, width: 20, borderColor: 'black', borderWidth: 2, borderRadius: 1}}>
-                      </View>
-                    </Marker>
-                  );
-                })
+                fraudulentTransactions ? 
+                  fraudulentTransactions.map((trans, index) => {
+                    const { longitude, latitude, count } = trans;
+                    const fixedLat = latitude.toFixed(6);
+                    const fixedLong = longitude.toFixed(6);
+                    return (
+                      <Marker
+                        key={index}
+                        coordinate={{ latitude: parseFloat(fixedLat), longitude: parseFloat(fixedLong)}}
+                        onPress={() => this.setState({ selectedMarker: trans })}
+                      >
+                        <View style={{backgroundColor: `${count > 10 ? '#FF3B30' : '#FFF67D'}`, height: 20, width: 20, borderColor: 'black', borderWidth: 2, borderRadius: 1}}>
+                        </View>
+                      </Marker>
+                    );
+                  }) : null
               }
             </MapView>
             {

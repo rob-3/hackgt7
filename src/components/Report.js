@@ -16,15 +16,16 @@ const FlexSafeAreaView = styled.SafeAreaView`
   height: 100%;
   background: white;
 `;
-const Report = ({transactions}) => {
-
+const Report = ({transactions, cb}) => {
   return (
     transactions !== null ? (
       <Stack.Navigator initialRouteName='Landing'>
         <Stack.Screen name='Landing'>
           {props => <Landing {...props} transactions={transactions}/>}
         </Stack.Screen>
-        <Stack.Screen name='Confirmation' component={Confirmation}></Stack.Screen>
+        <Stack.Screen name='Confirmation'>
+          {props => <Confirmation {...props} cb={cb}/>}
+        </Stack.Screen>
       </Stack.Navigator>
     ) : (
       <View style={styles.indicatorStyle}>
@@ -86,11 +87,12 @@ const Landing = ({ navigation, transactions }) => {
   );
 };
 
-const Confirmation = ({ route, navigation }) => {
+const Confirmation = ({ route, navigation, cb }) => {
   const { transaction: t } = route.params;
 
   const handler = async () => {
     await API.createFraudulentTransaction(t);
+    cb();
     navigation.goBack();
     navigation.navigate('Home');
   };
