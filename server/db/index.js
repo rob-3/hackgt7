@@ -14,11 +14,11 @@ const run = async () => {
     console.log(`${level} - ${loggerName}:  ${message}`);
   });
 
-  console.log('connected to db')
-}
+  console.log('connected to db');
+};
 
 run();
 
 module.exports = {
   client
-}
+};

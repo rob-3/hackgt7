@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Image, View, Text } from 'react-native';
-import Map from './src/components/Map.js';
+import Maps from './src/components/Maps.js';
 import Login from './src/components/Login.js';
 import Accounts from './src/components/Accounts.js';
 import Report from './src/components/Report.js';
@@ -38,7 +38,7 @@ class HomeScreen extends Component {
             justifyContent: 'flex-end'
           }
         }}>
-        <TopTab.Screen name="Map" component={Map} />
+        <TopTab.Screen name="Map" component={Maps} />
         <TopTab.Screen name="Accounts" component={Accounts} />
       </TopTab.Navigator>
     );
