@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,26 +22,24 @@ const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
-class HomeScreen extends Component {
-  render() {
-    return (
-      <TopTab.Navigator
-        tabBarOptions={{
-          activeTintColor: '#469F3D',
-          inactiveTintColor: '#3C3C43',
-          indicatorStyle: {
-            backgroundColor: '#469D3D'
-          },
-          style: {
-            display: 'flex',
-            justifyContent: 'flex-end'
-          }
-        }}>
-        <TopTab.Screen name="Map" component={Maps} />
-        <TopTab.Screen name="Accounts" component={Accounts} />
-      </TopTab.Navigator>
-    );
-  }
+const HomeScreen = () => {
+  return (
+    <TopTab.Navigator
+      tabBarOptions={{
+        activeTintColor: '#469F3D',
+        inactiveTintColor: '#3C3C43',
+        indicatorStyle: {
+          backgroundColor: '#469D3D'
+        },
+        style: {
+          display: 'flex',
+          justifyContent: 'flex-end'
+        }
+      }}>
+      <TopTab.Screen name="Map" component={Maps} />
+      <TopTab.Screen name="Accounts" component={Accounts} />
+    </TopTab.Navigator>
+  );
 }
 
 export default function App() {

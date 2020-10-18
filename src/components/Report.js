@@ -53,7 +53,7 @@ const Landing = ({ navigation, transactions }) => {
       <TouchableOpacity style={{ height : '25%' }} key={index} onPress={() => {
         navigation.navigate('Confirmation', { transaction: t });
       }}>
-        <Card key={t.id} height='100%' width='100%' align="center" direction="row" justify="center" style={{ paddingHorizontal: 10 }}>
+        <Card key={t.id} margin={10} height='100%' width='100%' align="center" direction="row" justify="center" style={{ paddingHorizontal: 10 }}>
           <View style={{width: '70%'}}>
             <Text>{new Date(t.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
             <Text>{t.place.name}</Text>
@@ -103,6 +103,7 @@ const Confirmation = ({ route, navigation }) => {
 
   const handler = async () => {
     await API.createFraudulentTransaction(t);
+    navigation.goBack();
     navigation.navigate('Home');
   };
 
