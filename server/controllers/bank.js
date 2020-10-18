@@ -27,6 +27,21 @@ const retryAxios = (...params) => {
   });
 };
 
+const getAllAccountsInfo = async (userNumber) => {
+  const accessToken = await getAuthCode().catch(err => console.log(err.message));
+  const accounts = await getAccounts(userNumber, accessToken).catch(err => console.log(err.message));
+  console.log(accounts);
+  const accountInfo = accounts.map(account => {
+    // we don't have to hardcode this, there are 299 users
+    return { accountNumber: account.accountNumber, currentBalance: account.currentBalance, availableBalance: account.availableBalance, category: account.category };
+  });
+
+  return {
+    status: 200,
+    data: accountInfo
+  };
+};
+
 const getAllTransactions = async (userNumber) => {
   const accessToken = await getAuthCode().catch(err => console.log(err.message));
   const accounts = await getAccounts(userNumber, accessToken).catch(err => console.log(err.message));
@@ -125,4 +140,4 @@ const getAccounts = async (userNumber, accessToken) => {
   return d.accounts;
 };
 
-module.exports = { getAllTransactions };
+module.exports = { getAllTransactions, getAllAccountsInfo };

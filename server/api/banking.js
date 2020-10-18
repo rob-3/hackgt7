@@ -7,4 +7,10 @@ router.get('/transactions/:id', async (req, res) => {
   res.status(status).send(data);
 });
 
+router.get('/accounts/:id', async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await bank.getAllAccountsInfo(id);
+  res.status(status).send(data);
+});
+
 module.exports = router;
