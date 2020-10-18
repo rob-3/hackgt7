@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View, TouchableOpacity, Text, TouchableHighlight } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import API from '../utils/API';
 
@@ -15,9 +15,9 @@ class Maps extends Component {
       loadingTrans: true,
       popupPlace: null,
       fraudulentTransactions: null,
+      selectedMarker: null
     };
     this.goToInitialRegion = this.goToInitialRegion.bind(this);
-    this.openPopup = this.openPopup.bind(this);
   }
 
   async componentDidMount() {
@@ -57,15 +57,8 @@ class Maps extends Component {
     this.mapView.animateToRegion(initialRegion, 2000);
   }
 
-  openPopup(e) {
-    console.log(e.nativeEvent);
-    const coordinate = e.nativeEvent.coordinate;
-    const place = places.get(coordinate.latitude);
-    this.setState({popupPlace: place});
-  }
-
   render() {
-    const { foundLocation, loadingTrans } = this.state;
+    const { foundLocation, loadingTrans, selectedMarker } = this.state;
     console.log('found location');
     console.log(foundLocation);
     console.log('loading trans');
@@ -73,39 +66,54 @@ class Maps extends Component {
     return (
       <>
         {(foundLocation && !loadingTrans) ? (
-          <MapView
-            style={styles.mapStyle}
-            region={this.state.mapRegion}
-            followUserLocation={true}
-            ref={ref => (this.mapView = ref)}
-            zoomEnabled={true}
-            showsUserLocation={true}
-            onMapReady={this.goToInitialRegion}
-            initialRegion={this.state.initialRegion}
-          >
+          <View style={styles.container}>
+            <MapView
+              style={styles.mapStyle}
+              region={this.state.mapRegion}
+              followUserLocation={true}
+              ref={ref => (this.mapView = ref)}
+              zoomEnabled={true}
+              showsUserLocation={true}
+              onMapReady={this.goToInitialRegion}
+              initialRegion={this.state.initialRegion}
+            >
+              {
+                this.state.fraudulentTransactions.map((trans, index) => {
+                  const { longitude, latitude, count } = trans;
+                  console.log('IM IN HERE AT INDEX ' + index);
+                  const fixedLat = latitude.toFixed(6);
+                  const fixedLong = longitude.toFixed(6);
+                  console.log(fixedLat);
+                  console.log(fixedLong);
+                  return (
+                    <Marker
+                      key={index}
+                      coordinate={{ latitude: fixedLong, longitude: fixedLat}}
+                      onPress={() => this.setState({ selectedMarker: trans })}
+                    >
+                      <View style={{backgroundColor: `${count > 10 ? '#FF3B30' : '#FFF67D'}`, height: 20, width: 20, borderColor: 'black', borderWidth: 2, borderRadius: 1}}>
+                      </View>
+                    </Marker>
+                  );
+                })
+              }
+            </MapView>
             {
-              this.state.fraudulentTransactions.map((trans, index) => {
-                const { longitude, latitude } = trans;
-                console.log('IM IN HERE AT INDEX ' + index);
-                const fixedLat = latitude.toFixed(6);
-                const fixedLong = longitude.toFixed(6);
-                console.log(fixedLat);
-                console.log(fixedLong);
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{ latitude: fixedLong, longitude: fixedLat}}
-                    title={'Title'}
-                    description={'Description that can be longer'}
-                    onPress={this.openPopup}
-                  >
-                    <View style={{backgroundColor: 'red', padding: 10, border: 'black 1px solid', borderRadius: '10%'}}>
-                    </View>
-                  </Marker>
-                );
-              })
+              selectedMarker && (
+                <TouchableOpacity style={styles.overlay}>
+                  <View style={styles.infoCard}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{selectedMarker.name}</Text>
+                    <Text>Reports: {selectedMarker.count}</Text>
+                    <Text>Last Report: February 3rd</Text>
+                    <Text>Overall Rating: {selectedMarker.count < 10 ? 'Suspicious' : 'Dangerous'}</Text>
+                    <TouchableHighlight onPress={() => {this.setState({ selectedMarker: null });}} style={styles.closeButton}>
+                      <Text style={{ color: 'white' }}>Close</Text>
+                    </TouchableHighlight>
+                  </View>
+                </TouchableOpacity>
+              )
             }
-          </MapView>
+          </View>
         ) : (
           <View style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" />
@@ -127,7 +135,47 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  closeButton: {
+    width: '100%',
+    backgroundColor: '#FF3B30',
+    color: 'white',
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 3,
+    borderRadius: 10,
+    borderColor: '#FF3B30',
+    borderWidth: 1
+  },
+  infoCard: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    position: 'absolute',
+    paddingLeft: 25,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 30,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    width: Dimensions.get('window').width - 30,
+    height: 130,
+    borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 10
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 
 export default Maps;
