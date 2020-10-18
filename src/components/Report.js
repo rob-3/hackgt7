@@ -39,10 +39,10 @@ const Landing = ({ navigation, transactions }) => {
   const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
   const components = sorted.map((t, index) => {
     return (
-      <TouchableOpacity style={{ height : '25%' }} key={index} onPress={() => {
+      <TouchableOpacity style={{ height : '15%', width: '100%', marginVertical: 5 }} key={index} onPress={() => {
         navigation.navigate('Confirmation', { transaction: t });
       }}>
-        <Card key={t.id} margin={10} height='100%' width='100%' align="center" direction="row" justify="center" style={{ paddingHorizontal: 10 }}>
+        <Card key={t.id} margin={10} height='100%' width='94%' align="center" direction="row" justify="center" style={{ paddingHorizontal: 10 }}>
           <View style={{width: '70%'}}>
             <Text>{new Date(t.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
             <Text>{t.place.name}</Text>
@@ -78,7 +78,7 @@ const Landing = ({ navigation, transactions }) => {
         />
       </View>
       <ScrollView contentContainerStyle={{width: '90%', alignSelf: 'center'}}>
-        <View style={{ backgroundColor: '#EFEFF4', height: 30, padding: 5, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
+        <View style={{ backgroundColor: '#EFEFF4', height: 30, width: '100%', padding: 5, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
           <Text>Recent Transactions</Text>
         </View>
         {components}
