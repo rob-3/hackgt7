@@ -44,7 +44,7 @@ class HomeScreen extends Component {
   }
 }
 
-export default App = () => {
+export default function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     fetchUser();
@@ -67,12 +67,14 @@ export default App = () => {
           borderBottomWidth: 0,
         },
         headerTitle: (
-          <Image source={require('./src/icons/NCRLogo.png')} style={{
-            flex: 1,
-            height: 30,
-            width: 30,
-            resizeMode: 'contain'
-          }}/>
+          <View>
+            <Image source={require('./src/icons/NCRLogo.png')} style={{
+              flex: 1,
+              height: 30,
+              width: 30,
+              resizeMode: 'contain'
+            }}/>
+          </View>
         )
       }}
       >

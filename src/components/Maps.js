@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator, View, TouchableOpacity, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View, TouchableOpacity, Text, TouchableHighlight, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import API from '../utils/API';
 
@@ -22,7 +22,6 @@ class Maps extends Component {
 
   async componentDidMount() {
     const { data } = await API.getFraudulentTransactions();
-    console.log(data)
     this.setState({ ...this.state, fraudulentTransactions: data, loadingTrans: false });
     this.getCurrentLocation();
   }
@@ -81,13 +80,12 @@ class Maps extends Component {
               {
                 this.state.fraudulentTransactions.map((trans, index) => {
                   const { longitude, latitude, count } = trans;
-                  console.log(latitude)
                   const fixedLat = latitude.toFixed(6);
                   const fixedLong = longitude.toFixed(6);
                   return (
                     <Marker
                       key={index}
-                      coordinate={{ latitude: parseFloat(fixedLong), longitude: parseFloat(fixedLat)}}
+                      coordinate={{ latitude: parseFloat(fixedLat), longitude: parseFloat(fixedLong)}}
                       onPress={() => this.setState({ selectedMarker: trans })}
                     >
                       <View style={{backgroundColor: `${count > 10 ? '#FF3B30' : '#FFF67D'}`, height: 20, width: 20, borderColor: 'black', borderWidth: 2, borderRadius: 1}}>
