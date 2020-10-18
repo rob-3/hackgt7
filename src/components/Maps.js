@@ -80,11 +80,8 @@ class Maps extends Component {
               {
                 this.state.fraudulentTransactions.map((trans, index) => {
                   const { longitude, latitude, count } = trans;
-                  console.log('IM IN HERE AT INDEX ' + index);
                   const fixedLat = latitude.toFixed(6);
                   const fixedLong = longitude.toFixed(6);
-                  console.log(fixedLat);
-                  console.log(fixedLong);
                   return (
                     <Marker
                       key={index}
