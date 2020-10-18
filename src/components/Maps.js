@@ -22,6 +22,7 @@ class Maps extends Component {
 
   async componentDidMount() {
     const { data } = await API.getFraudulentTransactions();
+    console.log(data)
     this.setState({ ...this.state, fraudulentTransactions: data, loadingTrans: false });
     this.getCurrentLocation();
   }
@@ -80,12 +81,13 @@ class Maps extends Component {
               {
                 this.state.fraudulentTransactions.map((trans, index) => {
                   const { longitude, latitude, count } = trans;
+                  console.log(latitude)
                   const fixedLat = latitude.toFixed(6);
                   const fixedLong = longitude.toFixed(6);
                   return (
                     <Marker
                       key={index}
-                      coordinate={{ latitude: fixedLong, longitude: fixedLat}}
+                      coordinate={{ latitude: parseFloat(fixedLong), longitude: parseFloat(fixedLat)}}
                       onPress={() => this.setState({ selectedMarker: trans })}
                     >
                       <View style={{backgroundColor: `${count > 10 ? '#FF3B30' : '#FFF67D'}`, height: 20, width: 20, borderColor: 'black', borderWidth: 2, borderRadius: 1}}>
