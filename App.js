@@ -15,7 +15,7 @@ import SignUp from './src/components/SignUp';
 import { HomeIcon } from './src/icons/HomeIcon';
 import { ProfileIcon } from './src/icons/ProfileIcon';
 import { SpeakerIcon } from './src/icons/SpeakerIcon';
-import NCRLogo from './src/icons/NCRLogo.png';
+import API from './src/utils/API';
 
 const TopTab = createMaterialTopTabNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -46,6 +46,18 @@ export default function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     fetchUser();
+  }, []);
+
+  const [transactions, setTransactions] = useState(null);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data }= await API.getTransactions(105);
+        setTransactions(data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
   }, []);
 
   const fetchUser = async () => {
@@ -97,12 +109,14 @@ export default function App() {
                   <ProfileIcon color={color} />
                 ),
               }}/>
-              <BottomTab.Screen name="Report" component={Report} options={{
+              <BottomTab.Screen name="Report" options={{
                 tabBarLabel: 'Report',
                 tabBarIcon: ({ color, size }) => (
                   <SpeakerIcon color={color} />
                 ),
-              }}/>
+              }}>
+                {props => <Report {...props} transactions={transactions} />}
+              </BottomTab.Screen>
             </BottomTab.Navigator>
           )}>
           </Stack.Screen>

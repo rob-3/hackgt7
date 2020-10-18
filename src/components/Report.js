@@ -16,19 +16,7 @@ const FlexSafeAreaView = styled.SafeAreaView`
   height: 100%;
   background: white;
 `;
-const Report = () => {
-  const [transactions, setTransactions] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data }= await API.getTransactions(105);
-        setTransactions(data);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
+const Report = ({transactions}) => {
 
   return (
     transactions !== null ? (
