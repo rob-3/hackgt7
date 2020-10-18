@@ -33,7 +33,7 @@ const getAllAccountsInfo = async (userNumber) => {
   console.log(accounts);
   const accountInfo = accounts.map(account => {
     // we don't have to hardcode this, there are 299 users
-    return { accountNumber: account.accountNumber, currentBalance: account.currentBalance, availableBalance: account.availableBalance, category: account.category };
+    return { accountNumber: account.accountNumber, currentBalance: account.currentBalance, availableBalance: account.availableBalance, category: account.category, description: account.description };
   });
 
   return {

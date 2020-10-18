@@ -113,7 +113,7 @@ const Confirmation = ({ route, navigation }) => {
             <Text style={{ color: 'white', fontSize: 18 }}>Report Fraud</Text>
           </TouchableHighlight>
           <TouchableOpacity onPress={() => {}} style={styles.contactButton}>
-            <Text style={{ color: '#FF3B30', fontSize: 18 }}>Contact Store</Text>
+            <Text style={{ color: '#FF3B30', fontSize: 18 }}>Contact Card Issuer</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   indicatorStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 75,
+    height: Dimensions.get('window').height - 150,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
