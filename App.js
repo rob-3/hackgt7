@@ -45,7 +45,7 @@ class HomeScreen extends Component {
   }
 }
 
-export default App = () => {
+export default function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     fetchUser();

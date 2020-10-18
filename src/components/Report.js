@@ -1,59 +1,64 @@
-import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ActivityIndicator, View, Text, SafeAreaView } from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { Button, StyleSheet, Dimensions, ActivityIndicator, View, Text, SafeAreaView } from 'react-native';
 import API from '../utils/API';
 import Card from './Card';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
-class Report extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      transactions: null,
-      loading: true
-    };
-  }
+const Report = () => {
+  const [transactions, setTransactions] = useState(null);
 
-  async componentDidMount() {
-    try {
-      const transactions = await API.getTransactions(105);
-      console.log(transactions);
-      this.setState({ transactions, loading: false });
-    } catch (err) {
-      console.log(err);
-      this.setState({ loading: false });
-    }
-  }
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data }= await API.getTransactions(105);
+        setTransactions(data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
-  render() {
-    const { loading } = this.state;
+  return (
+    transactions !== null ? (
+      <Stack.Navigator initialRouteName='Landing'>
+        <Stack.Screen name='Landing'>
+          {props => <Landing {...props} transactions={transactions}/>}
+        </Stack.Screen>
+        <Stack.Screen name='Confirmation' component={Confirmation}></Stack.Screen>
+      </Stack.Navigator>
+    ) : <Text>Loading</Text>
+  );
+};
 
-    let components;
-    if (!loading) {
-      const sorted = [...this.state.transactions.data].sort((a, b) => new Date(b.date) - new Date(a.date));
-      components = sorted.map(t => 
-        <Card key={t.id} height='10%' width='100%' onPress={() => {
-          API.createFraudulentTransaction(t.place);
-        }}>
-          <Text>{`$${t.amount} ${t.date} ${t.place.name}`}</Text>
-        </Card>);
-    }
+const Landing = ({ navigation, transactions }) => {
+  const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const components = sorted.map(t => 
+    <Card key={t.id} height='10%' width='100%'>
+      <Text onPress={() => navigation.navigate('Confirmation', { transaction: t })}>{`$${t.amount} ${t.date} ${t.place.name}`}</Text>
+    </Card>);
+  return (
+    <>
+      {components}
+    </>
+  );
+};
 
-    return (
-      <>
-        {
-          !loading ? (
-            <SafeAreaView>
-              {components}
-            </SafeAreaView>
-          ) : (
-            <View style={styles.indicatorStyle}>
-              <ActivityIndicator size="large" />
-            </View>
-          )
-        }
-      </>
-    );
-  }
-}
+const Confirmation = ({ route, navigation }) => {
+  const { transaction: t } = route.params;
+
+  const handler = () => {
+    API.createFraudulentTransaction(t);
+    navigation.navigate('Home');
+  };
+
+  return (
+    <Card height='10%' width='100%'>
+      <Text>{`$${t.amount} ${t.date} ${t.place.name}`}</Text>
+      <Button title='Report fraud!' onPress={handler}/>
+    </Card>
+  );
+};
 
 const styles = StyleSheet.create({
   mapStyle: {
