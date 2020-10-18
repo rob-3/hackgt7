@@ -16,7 +16,6 @@ import { HomeIcon } from './src/icons/HomeIcon';
 import { ProfileIcon } from './src/icons/ProfileIcon';
 import { SpeakerIcon } from './src/icons/SpeakerIcon';
 import NCRLogo from './src/icons/NCRLogo.png';
-import { set } from 'react-native-reanimated';
 
 const TopTab = createMaterialTopTabNavigator();
 const BottomTab = createBottomTabNavigator();
