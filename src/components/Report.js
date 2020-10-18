@@ -47,8 +47,8 @@ const Landing = ({ navigation, transactions }) => {
 const Confirmation = ({ route, navigation }) => {
   const { transaction: t } = route.params;
 
-  const handler = () => {
-    API.createFraudulentTransaction(t);
+  const handler = async () => {
+    await API.createFraudulentTransaction(t);
     navigation.navigate('Home');
   };
 
