@@ -22,7 +22,7 @@ const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
-const HomeScreen = () => {
+const HomeScreen = ({fraudulentTransactions}) => {
   return (
     <TopTab.Navigator
       tabBarOptions={{
@@ -36,7 +36,9 @@ const HomeScreen = () => {
           justifyContent: 'flex-end'
         }
       }}>
-      <TopTab.Screen name="Map" component={Maps} />
+      <TopTab.Screen name="Map">
+        {props => <Maps {...props} fraudulentTransactions={fraudulentTransactions}/>}
+      </TopTab.Screen>
       <TopTab.Screen name="Accounts" component={Accounts} />
     </TopTab.Navigator>
   );
@@ -68,6 +70,13 @@ export default function App() {
       console.log(e.message);
     }
   };
+
+  const [fraudulentTransactions, setFraudulentTransactions] = useState(null);
+  const updateMap = async () => {
+    const { data } = await API.getFraudulentTransactions();
+    setFraudulentTransactions(data);
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
@@ -97,7 +106,7 @@ export default function App() {
                 backgroundColor: '#469D3D'
               },
             }}>
-              <BottomTab.Screen name="Home" children={(props) => <HomeScreen {...props} />} options={{
+              <BottomTab.Screen name="Home" children={(props) => <HomeScreen {...props} fraudulentTransactions={fraudulentTransactions}/>} options={{
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color, size }) => (
                   <HomeIcon color={color} />
@@ -115,7 +124,7 @@ export default function App() {
                   <SpeakerIcon color={color} />
                 ),
               }}>
-                {props => <Report {...props} transactions={transactions} />}
+                {props => <Report {...props} transactions={transactions} cb={updateMap} />}
               </BottomTab.Screen>
             </BottomTab.Navigator>
           )}>
