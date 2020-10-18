@@ -68,12 +68,14 @@ export default function App() {
           borderBottomWidth: 0,
         },
         headerTitle: (
-          <Image source={require('./src/icons/NCRLogo.png')} style={{
-            flex: 1,
-            height: 30,
-            width: 30,
-            resizeMode: 'contain'
-          }}/>
+          <View>
+            <Image source={require('./src/icons/NCRLogo.png')} style={{
+              flex: 1,
+              height: 30,
+              width: 30,
+              resizeMode: 'contain'
+            }}/>
+          </View>
         )
       }}
       >
