@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Dimensions, ActivityIndicator, View, Text, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, View, Text, Platform, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import API from '../utils/API';
 import Card from './Card';
@@ -50,10 +50,10 @@ const Landing = ({ navigation, transactions }) => {
   const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
   const components = sorted.map((t, index) => {
     return (
-      <TouchableOpacity style={{ height : 'auto', margin: 0 }} key={index} onPress={() => {
+      <TouchableOpacity style={{ height : '25%' }} key={index} onPress={() => {
         navigation.navigate('Confirmation', { transaction: t });
       }}>
-        <Card key={t.id} margin={10} height='auto' width='100%' align="center" direction="row" justify="center">
+        <Card key={t.id} margin={10} height='100%' width='100%' align="center" direction="row" justify="center" style={{ paddingHorizontal: 10 }}>
           <View style={{width: '70%'}}>
             <Text>{new Date(t.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
             <Text>{t.place.name}</Text>
@@ -108,10 +108,28 @@ const Confirmation = ({ route, navigation }) => {
   };
 
   return (
-    <Card height='10%' width='100%'>
-      <Text>{`$${t.amount} ${t.date} ${t.place.name}`}</Text>
-      <Button title='Report fraud!' onPress={handler}/>
-    </Card>
+    <FlexSafeAreaView>
+      <View style={{ padding: 20, paddingTop: 50 }}>
+        <Text style={{ fontSize: '20', fontWeight: 'bold' }}>{t.place.name}</Text>
+        <Text style={{ fontSize: '18' }}>1984 Andromeda Lane, Weston, Florida, 33327</Text>
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
+          <Text style={{ fontSize: '18', fontWeight: 'bold' }}>Amount:</Text>
+          <Text style={{ fontSize: '18', color: '#FF3B30' }}>{`$${t.amount}`}</Text>  
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
+          <Text style={{ fontSize: '18', fontWeight: 'bold' }}>Transaction Date:</Text>
+          <Text style={{ fontSize: '18', color: '#C4C4C4' }}>{`$${t.date}`}</Text>  
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginVertical: 10 }}>
+          <TouchableHighlight onPress={handler} style={styles.reportButton}>
+            <Text style={{ color: 'white', fontSize: 18 }}>Report Fraud</Text>
+          </TouchableHighlight>
+          <TouchableOpacity onPress={() => {}} style={styles.contactButton}>
+            <Text style={{ color: '#FF3B30', fontSize: 18 }}>Contact Store</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </FlexSafeAreaView>
   );
 };
 
@@ -122,10 +140,38 @@ const styles = StyleSheet.create({
   },
   indicatorStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height - 75,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  reportButton: {
+    width: '48%',
+    backgroundColor: '#FF3B30',
+    color: 'white',
+    padding: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 3,
+    borderRadius: 10,
+    borderColor: '#FF3B30',
+    borderWidth: 1,
+    marginRight: '2%',
+  },
+  contactButton: {
+    width: '48%',
+    backgroundColor: '#FFFFFF',
+    color: 'white',
+    padding: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 3,
+    borderRadius: 10,
+    borderColor: '#FF3B30',
+    borderWidth: 1,
+    marginLeft: '2%'
   }
 });
 
