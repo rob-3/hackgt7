@@ -103,6 +103,7 @@ const Confirmation = ({ route, navigation }) => {
 
   const handler = async () => {
     await API.createFraudulentTransaction(t);
+    navigation.goBack();
     navigation.navigate('Home');
   };
 
