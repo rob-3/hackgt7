@@ -5,8 +5,13 @@ import API from '../utils/API';
 import Card from './Card';
 
 const Input = styled.TextInput`
-  height: 30px;
+  height: 40px;
   width: 80%;
+  background-color: white;
+  border: 1px solid rgba(60, 60, 67, 0.29);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
 `;
 
 const initialCredentials = {
@@ -22,6 +27,29 @@ const StyledModal = styled.Modal`
   height: 100%;
 `;
 
+const SignupButton = styled.TouchableOpacity`
+  background-color: #FFFEFE;
+  color: white;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+`;
+
+const LoginButton = styled.TouchableHighlight`
+  background-color: #000000;
+  color: white;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  margin-top: 10px;
+  border-radius: 10px;
+`;
 const SignUp = ({ setUser, navigation }) => {
   const [credentials, setCredentials] = useState(initialCredentials);
   const [showModal, setShowModal] = useState(false);
@@ -42,16 +70,19 @@ const SignUp = ({ setUser, navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Card>
-          <Text>Create an account!</Text>
+      <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#2E7DF7', paddingTop: 40 }}>
+      <Image source={require('../../assets/searchlight.png')} style={{marginBottom: 40}}/>
           <Input placeholder="Username" value={credentials.username} onChangeText={(text) => handleFieldChange('username', text)}></Input>
           <Input placeholder="Password" secureTextEntry value={credentials.password} onChangeText={(text) => handleFieldChange('password', text)}></Input>
-          <TouchableHighlight onPress={() => navigation.navigate('LogIn')}>
-            <Text>Already have an account? Log in!</Text>
-          </TouchableHighlight>
-          <Button title="Sign Up" onPress={handleSubmit}></Button>
-        </Card>
+          <Text style={{color: 'white', width: '80%', textAlign: 'center', marginBottom: 10}}>By Signing up, I agree to the TERMS OF USE and PRIVACY POLICY</Text>
+          <SignupButton onPress={handleSubmit}>
+            <Text style={{color: '#2E7DF7'}}>Sign Up</Text>
+          </SignupButton>
+          <View style={{borderBottomColor: 'white', width: '80%', borderBottomWidth: 1, marginBottom: 20}}></View>
+          <Text style={{color: 'white'}}>Already have an account?</Text>
+          <LoginButton onPress={() => navigation.navigate('LogIn')}>
+            <Text style={{color: 'white'}}>Login</Text>
+          </LoginButton>
         <StyledModal
           animationType="slide"
           transparent={true}
